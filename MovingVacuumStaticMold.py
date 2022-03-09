@@ -15,8 +15,8 @@ OUT_OF_BOUNDS = 1000
 CLEAN_REWARD = 25
 epsilon = 0.9 # Start at 0.9, Once trained change value to 0.0
 EPS_DECAY = 0.9998
-SHOW_EVERY = 3000
-MOVE_TIME = 1 # Do not set to zero, the > the number the slower the objects go.
+SHOW_EVERY = 300
+MOVE_TIME = 100 # Do not set to zero, the > the number the slower the objects go.
 
 start_q_table = None # Once trained put "filename.pickle" here
 
@@ -97,6 +97,8 @@ for episode in range(HM_EPISODES):
     vacuum = Vacuum()
     dirt = Mold(4, 4)
 
+
+
     if episode % SHOW_EVERY == 0:
         print(f"on #{episode}, epsilon is {epsilon}")
         print(f"{SHOW_EVERY} ep mean {np.mean(episode_rewards[-SHOW_EVERY:])}")
@@ -137,14 +139,16 @@ for episode in range(HM_EPISODES):
 
         vacuum_q_table[obs][vacuum_action] = vacuum_new_q
 
+
+
         if show:
             env = np.zeros((SIZE, SIZE, 3), dtype = np.uint8)
             env[vacuum.y][vacuum.x] = d[PLAYER_N]
             env[dirt.y][dirt.x] = d[ENEMY_N]
 
-            img = Image.fromarray(env, "RGB")
-            img = img.resize((500, 500))
-            cv2.imshow("", np.array(img))
+            img = Image.fromarray(env, mode="RGB")
+            img = img.resize((500, 500), resample=Image.NEAREST)
+            cv2.imshow("image", np.array(img))
             cv2.waitKey(MOVE_TIME)
 
             if reward == CLEAN_REWARD or reward == -OUT_OF_BOUNDS:
@@ -162,6 +166,8 @@ for episode in range(HM_EPISODES):
     
     episode_rewards.append(episode_reward)
     epsilon *= EPS_DECAY
+
+
 
 moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,)) / SHOW_EVERY, mode="valid")
 

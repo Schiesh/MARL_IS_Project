@@ -15,9 +15,9 @@ OUT_OF_BOUNDS = 1000
 CLEAN_REWARD = 25
 epsilon = 0.9 # Start at 0.9, Once trained change value to 0.0
 EPS_DECAY = 0.9998
-SHOW_EVERY = 3000
-MOVE_TIME = 1 # Do not set to zero, the > the number the slower the objects go.
-DIRT_MOD = 3
+SHOW_EVERY = 300
+MOVE_TIME = 100 # Do not set to zero, the > the number the slower the objects go.
+DIRT_MOD = 2
 
 start_q_table = None # Once trained put "filename.pickle" here
 
@@ -185,7 +185,7 @@ for episode in range(HM_EPISODES):
             env[dirt.y][dirt.x] = d[ENEMY_N]
 
             img = Image.fromarray(env, "RGB")
-            img = img.resize((500, 500))
+            img = img.resize((500, 500), resample=Image.NEAREST)
             cv2.imshow("", np.array(img))
             cv2.waitKey(MOVE_TIME)
 
