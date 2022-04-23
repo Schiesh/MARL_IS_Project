@@ -228,11 +228,5 @@ plt.xlabel("episode #")
 plt.title("Vacuum Graph")
 plt.show()
 
-plt.plot([i for i in range(len(dirt_moving_avg))], dirt_moving_avg)
-plt.ylabel(f"reward {SHOW_EVERY}ma")
-plt.xlabel("episode #")
-plt.title("Mold Graph")
-plt.show()
-
 with open(f"vacuumqtable-{int(time.time())}.pickle", "wb") as f:
     pickle.dump(vacuum_q_table, f)
